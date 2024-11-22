@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Суши Мастер</title>
+  <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+
+
+
+  <div class="container">
+    <h1 class="page-title"><span class="red__title--elem">Крутите</span>  колесо <br>
+      <span class="red__title--elem">и выигрывайте </span>вкусные призы!</h1>
+    <div class="content-wrapp">
+      <div class="wheel">
+        <div class="wheel__pointer">
+          <img src="img/2.png" alt="pointer">
+        </div>
+        <div class="wheel__circle">
+          <div class="wheel__segment wheel__segment--1">
+            <img src="img/calif.png" alt="sushi" class="wheel__prize">
+          </div>
+          <div class="wheel__segment wheel__segment--2">
+            <img src="img/roll3.png" alt="iphone" class="wheel__prize">
+          </div>
+          <div class="wheel__segment wheel__segment--3">
+            <img src="img/i-tamb.png" alt="sushi"class="wheel__prize">
+          </div>
+          <div class="wheel__segment wheel__segment--4">
+            <img src="img/fil.png" alt="sushi" class="wheel__prize">
+          </div>
+          <div class="wheel__segment wheel__segment--5">
+            <img src="img/disck.png" alt="20%"class="wheel__prize">
+          </div>
+          <div class="wheel__segment wheel__segment--6">
+            <img src="img/roll.png" alt="sushi"class="wheel__prize">
+          </div>
+          <div class="wheel__segment wheel__segment--7 wheel__segment--active">
+            <img src="img/roll2.png" alt="sushi"class="wheel__prize">
+          </div>
+        </div>
+      
+        <div class="wheel__center">
+          <img src="img/1.png" alt="" class="wheel__center--1">
+          <button class="wheel__button">
+            <div><img src="img/logo-btn.svg" alt="logo"></div>
+            <div>Крутить!</div>
+          </button>
+        </div>
+      </div>
+      
+      
+      <!-- task -->
+      <div class="tasks">
+        <div class="tasks__header">
+          <h3 class="tasks__title">Всего попыток: <span class="tasks__attempts">2</span></h3>
+          <p class="tasks__description">Выполните задание и нажмите кнопку "Готово", чтобы получить дополнительную попытку крутить колесо</p>
+        </div>
+        <div class="tasks__list">
+          <!-- Задание 1 -->
+          <div class="task">
+            <div class="task__info">
+              <div class="task__text">Подпишитесь на сообщество</div>
+              <div class="task__reward">+1 попытка</div>
+            </div>
+            <button class="task__button task__button--done">Готово</button>
+          </div>
+          <!-- Задание 2 -->
+          <div class="task">
+            <div class="task__info task__info--credited">
+              <div class="task__text">Подпишитесь на рассылку</div>
+              <div class="task__reward">+1 попытка</div>
+            </div>
+            <button class="task__button task__button--credited">Начислено</button>
+          </div>
+          <!-- Задание 3 -->
+          <div class="task">
+            <div class="task__info">
+              <div class="task__text">Сделайте репост о конкурсе ВК</div>
+              <div class="task__reward">+1 попытка</div>
+            </div>
+            <button class="task__button task__button--done">Готово</button>
+          </div>
+          <!-- Задание 4 -->
+          <div class="task">
+            <div class="task__info">
+              <div class="task__text">Оформите заказ по ссылке</div>
+              <div class="task__reward">+1 попытка</div>
+            </div>
+            <button class="task__button task__button--done">Готово</button>
+          </div>
+          <!-- Задание 5 -->
+          <div class="task">
+            <div class="task__info">
+              <div class="task__text">Загрузите чек</div>
+              <div class="task__reward">+1 попытка</div>
+            </div>
+            <button class="task__button task__button--done">Готово</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+</body>
+
+
+<script>
+
+
+
+
+const wheel = document.querySelector('.wheel__circle');
+const spinButton = document.querySelector('.wheel__button');
+
+let currentRotation = 0; // Храним текущий угол вращения
+let isFirstClick = true; // Флаг для определения первого клика
+
+spinButton.addEventListener('click', () => {
+    // Секторный угол (51.43° для 7 секторов)
+    const sectorAngle = 360 / 7;
+
+    // Случайное число от 0 до 6 (индекс сектора)
+    const randomSector = Math.floor(Math.random() * 7);
+
+    let baseRotation; // Количество оборотов зависит от клика
+
+    if (isFirstClick) {
+        baseRotation = 360 * 5.5; // Первый клик: минимум 5.5 оборотов
+        isFirstClick = false; // После первого клика флаг отключаем
+    } else {
+        baseRotation = 360 * 2; // Второй и последующие клики: 2 оборота
+    }
+
+    const additionalRotation = randomSector * sectorAngle; // Угол для случайного сектора
+
+    // Новый угол поворота относительно текущего
+    const newRotation = baseRotation + additionalRotation;
+
+    // Обновляем текущее значение поворота
+    currentRotation += newRotation;
+
+    // Применяем вращение
+    wheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.83, 0.67)';
+    wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+    // Вычислим, какой сектор окажется в центре после вращения
+    setTimeout(() => {
+        const sectorInCenter = (7 - (randomSector % 7)) % 7; // Рассчитываем сектор
+        console.log(`Сектор в центре: ${sectorInCenter + 1}`); // Выводим результат
+    }, 4000); // Через 4 секунды, когда вращение завершится
+});
+
+
+
+</script>
+</html>
